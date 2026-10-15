@@ -4,8 +4,16 @@ An all-in-one touch-screen driver for macOS: multi-touch input, calibration, a g
 per-app rules (Commander), a screen magnifier, annotation tools, and display controls
 (brightness, contrast, resolution, rotation) in a menu bar app.
 
-Built and tested with a SiS HID Touch Controller (USB 0457:0819), and it should work with other
-vendor-0x0457 HID multi-touch panels.
+## Compatibility
+**Tested only with one device**: a SiS HID Touch Controller (USB `0457:0819`) built into a ZEUSLAP TYPEC portable monitor,
+on an Apple Silicon Mac. Nothing else has been verified.
+
+- **Touch input** is written for that controller's HID report format (multi-touch report `0x91`, 0–4095 coordinates) and
+  matches any device with USB vendor ID `0x0457`. Panels from other vendors, or other SiS firmware, will probably not work
+  without changes to `Sources/TouchMCore/Contact.swift` and `TouchDevice.swift`. `hidprobe` prints what a panel reports.
+- **Brightness / contrast (DDC/CI), resolution and rotation** talk to the display itself, not the touch panel, and are not
+  tied to one model. They have only been tried on the monitor above, and DDC support varies by monitor; software dimming is the fallback.
+- Reports and pull requests for other panels are welcome.
 
 ## Features
 - Multi-touch panel access through IOHIDManager (no kernel or driver extension).
