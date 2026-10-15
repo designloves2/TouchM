@@ -62,6 +62,7 @@ public final class GestureEngine {
     private var rSwipe: [String: CommanderRule] = [:]
     private var edgeDir: String?                  // direction of travel that would make an edge swipe, if this touch started at an edge
     private var scrollLast = CGPoint.zero
+    private var scrollPlaced = false
     private var stoppedMomentum = false      // this touch only stopped a gliding page: it must not also click
 
     // two or more fingers
@@ -161,6 +162,12 @@ public final class GestureEngine {
         CGPoint(x: pts.map(\.x).reduce(0, +) / Double(pts.count), y: pts.map(\.y).reduce(0, +) / Double(pts.count))
     }
 
+    /// Edge gestures put the pointer where the system must see it (an auto-hidden Dock is revealed that way): do not pull it back afterwards.
+    private func fire(_ name: String, _ p: CGPoint) {
+        if name.contains("from edge") { anchorPoint = nil; anchorReturn?.invalidate(); anchorReturn = nil }
+        onGesture?(name, p)
+    }
+
     // MARK: orientation
     /// Which axes gestures must be read mirrored on: both when the display is rotated 180° (auto), or as chosen.
     private var flips: (x: Bool, y: Bool) {
@@ -213,7 +220,7 @@ public final class GestureEngine {
             // One finger left after two: was the second a quick tap on top of a resting first finger?
             if pressTapArmed, !pressTapFired, maxFingers == 2, Date().timeIntervalSince(secondDown) < Double(settings.pressTapMaxMs) / 1000, secondTravel < 40 {
                 pressTapFired = true
-                onGesture?("press and tap", pressAnchor)
+                fire("press and tap", pressAnchor)
             }
         }
     }
@@ -268,7 +275,7 @@ public final class GestureEngine {
             if along >= settings.edgeDistancePx && across < along {
                 cancelTimers(); mode = .single; one = .done
                 TMLog.write("edge swipe: one finger \(e) from edge, travel \(Int(along))")
-                onGesture?("one finger swipe \(e) from edge", downPoint)
+                fire("one finger swipe \(e) from edge", downPoint)
                 return
             }
             if d > 24 && along < d * 0.6 { edgeDir = nil }          // not heading inward: it is an ordinary touch after all
@@ -292,13 +299,13 @@ public final class GestureEngine {
             startMouseDrag(at: downPoint)
             carryOn(p)
         case "scroll":
-            mode = .single; one = .scroll; inj.resetScroll(); scrollLast = downPoint
+            mode = .single; one = .scroll; inj.resetScroll(); scrollLast = downPoint; inj.move(downPoint)
             carryOn(p)
         case "none":
             mode = .single; one = .done
         default:                                                      // keystroke, open app, ...: runs once
             mode = .single; one = .done
-            onGesture?("one finger drag", downPoint)
+            fire("one finger drag", downPoint)
         }
     }
 
@@ -317,7 +324,7 @@ public final class GestureEngine {
             if major >= settings.swipeDistancePx * 0.8, major > minor * 1.3 {
                 one = .done
                 TMLog.write("swipe: one finger \(dir), travel \(Int(major))")
-                onGesture?("one finger swipe \(dir)", downPoint)
+                fire("one finger swipe \(dir)", downPoint)
             }
         case .rightDrag: inj.rightDrag(p)
         case .moveOnly: inj.move(p)
@@ -374,7 +381,7 @@ public final class GestureEngine {
         case "none": break
         default:
             mode = .single; one = .done
-            onGesture?("one finger press", downPoint)
+            fire("one finger press", downPoint)
         }
     }
 
@@ -396,7 +403,7 @@ public final class GestureEngine {
             inj.move(q); inj.click(q, clicks: clicks)
             lastTapTime = now; lastTapPoint = q
         case "none": break
-        default: onGesture?("one finger tap", downPoint)
+        default: fire("one finger tap", downPoint)
         }
     }
 
@@ -458,7 +465,7 @@ public final class GestureEngine {
            let name = Self.edgeSwipe(from: gp(edgeStart), to: gp(c), fingers: "two", elapsed: 0, display: mapper.display, margin: settings.edgeMarginPx, need: settings.edgeDistancePx) {
             edgeFired = true
             TMLog.write("edge swipe: \(name)")
-            onGesture?(name, edgeStart)
+            fire(name, edgeStart)
         }
         // Multi-finger swipe: fire as soon as the fingers have travelled far enough, without waiting for lift.
         if pts.count >= 3, pts.count == peakCount, !swipeFired {
@@ -469,7 +476,7 @@ public final class GestureEngine {
                 let dir = abs(dx) > abs(dy) ? (dx > 0 ? "right" : "left") : (dy > 0 ? "down" : "up")
                 swipeFired = true
                 TMLog.write("swipe fired live: \(w) \(dir) travel=\(Int(major)) in \(String(format: "%.2f", Date().timeIntervalSince(peakTime)))s")
-                onGesture?("\(w) finger swipe \(dir)", peakStart)
+                fire("\(w) finger swipe \(dir)", peakStart)
             }
         }
         secondTravel += hypot(c.x - lastCentroid.x, c.y - lastCentroid.y)
@@ -486,6 +493,7 @@ public final class GestureEngine {
         lastSpread = g.spread; lastAngle = g.angle
         if pts.count == 2, settings.twoFingerScroll, scrollAllowed, !pinching, !edgeFired, abs(angleTotal) < 25 {
             let k = settings.scrollSpeed * (settings.naturalScroll ? 1 : -1)
+            if !scrollPlaced { scrollPlaced = true; inj.move(c) }      // scroll the window under the fingers, not under the last pointer position
             inj.scroll(dx: (c.x - lastCentroid.x) * k, dy: (c.y - lastCentroid.y) * k)
         }
         lastCentroid = c
@@ -533,16 +541,16 @@ public final class GestureEngine {
         // Pinch (any finger count).
         let peakDist = peakStart.distance(to: peakLast)   // lifting fingers one by one drags the final centroid, so judge travel while all were down
         if abs(pinchTotal) > (n == 2 ? 60 : 50) && (n == 2 ? dist < 150 : peakDist < 110) {
-            onGesture?("\(w) finger pinch \(pinchTotal > 0 ? "expand" : "contract")", multiStart); return
+            fire("\(w) finger pinch \(pinchTotal > 0 ? "expand" : "contract")", multiStart); return
         }
         if n == 2 {
-            if abs(angleTotal) > 30 && dist < 120 { Commander.lastRotationClockwise = angleTotal > 0; onGesture?("two finger rotate", multiStart); return }
-            if dist < 20 && dt < 0.35 && !pinchedLive && !pressTapArmed && !pressTapFired { onGesture?("two finger tap", multiStart) }
+            if abs(angleTotal) > 30 && dist < 120 { Commander.lastRotationClockwise = angleTotal > 0; fire("two finger rotate", multiStart); return }
+            if dist < 20 && dt < 0.35 && !pinchedLive && !pressTapArmed && !pressTapFired { fire("two finger tap", multiStart) }
             return
         }
         if swipeFired { return }
         let pdt = Date().timeIntervalSince(peakTime), pdist = peakStart.distance(to: peakLast)
-        if pdist < 30 && pdt < 0.5 { onGesture?("\(w) finger tap", multiStart); return }
+        if pdist < 30 && pdt < 0.5 { fire("\(w) finger tap", multiStart); return }
         TMLog.write("no \(w)-finger gesture: peak travel \(Int(pdist)) over \(String(format: "%.2f", pdt))s")
     }
 
@@ -560,7 +568,7 @@ public final class GestureEngine {
 
     private func reset() {
         setCursorHidden(false)
-        stoppedMomentum = false
+        stoppedMomentum = false; scrollPlaced = false
         mode = .idle; one = .undecided; mouseDown = false; pressTapArmed = false; peakCount = 0; lensTouch = false; lensMoving = false
         edgeDir = nil
         cancelTimers()

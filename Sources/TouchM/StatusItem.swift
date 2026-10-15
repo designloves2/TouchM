@@ -13,6 +13,9 @@ final class StatusController: NSObject, NSPopoverDelegate {
     private var closedAt = Date.distantPast
 
     func start() {
+        // A named status item keeps its place in the menu bar between launches; without a name macOS (and menu bar managers
+        // that hide items) place it afresh every time, usually in the hidden zone.
+        item.autosaveName = "TouchM"
         let model = AppModel.shared
         let host = NSHostingController(rootView: MenuPanel().environmentObject(model))
         host.sizingOptions = .preferredContentSize
