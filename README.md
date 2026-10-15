@@ -6,10 +6,10 @@ per-app rules (Commander), a screen magnifier, annotation tools, and display con
 
 > **About this project.** There was no dedicated driver for this touch monitor on macOS, so I wrote one for my own use.
 > Feel free to use it as is. Bug reports are welcome, but fixes will be slow, so please fix things yourself if you need to.
-> Just keep the license (MIT) and its copyright notice.
+> Just keep the license (GPL-3.0): copyright notices stay, and if you distribute a modified version you must release its source too.
 >
 > 이 터치 모니터용 macOS 전용 드라이버가 없어서 제가 쓰려고 직접 만들었습니다. 그냥 가져다 쓰세요.
-> 버그 신고는 받지만 반영은 늦으니, 필요하시면 직접 고쳐서 사용하세요. 단, 라이선스(MIT)와 저작권 표시는 유지해 주세요.
+> 버그 신고는 받지만 반영은 늦으니, 필요하시면 직접 고쳐서 사용하세요. 단, 저작권 표시와 라이선스(GPL-3.0)는 유지해 주세요. 수정본을 배포할 때는 그 소스도 공개해야 합니다.
 
 ## Compatibility
 **Tested only with one device**: a SiS HID Touch Controller (USB `0457:0819`) built into the **ZEUSLAP P16KT** portable touch monitor
@@ -62,4 +62,5 @@ Any other vendor driver that claims the panel's USB interfaces must be switched 
 - `tools` – icon generator and the Korean string table
 
 ## License
-MIT — see [LICENSE](LICENSE). Provided as is, without warranty.
+GPL-3.0-or-later — see [LICENSE](LICENSE). Copyright (c) 2026 TJ.Choi. Provided as is, without warranty.
+Derived or modified versions that you distribute must keep this license and make their source available.
