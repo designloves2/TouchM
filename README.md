@@ -62,5 +62,5 @@ Any other vendor driver that claims the panel's USB interfaces must be switched 
 - `tools` – icon generator and the Korean string table
 
 ## License
-GPL-3.0-or-later — see [LICENSE](LICENSE). Copyright (c) 2026 TJ.Choi. Provided as is, without warranty.
+GPL-3.0 — see [LICENSE](LICENSE). Copyright (c) 2026 TJ.Choi. Provided as is, without warranty.
 Derived or modified versions that you distribute must keep this license and make their source available.
