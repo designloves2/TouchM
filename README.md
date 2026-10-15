@@ -24,10 +24,15 @@ per-app rules (Commander), a screen magnifier, annotation tools, and display con
 - Brightness and contrast over DDC/CI, with software dimming as a fallback; resolution (HiDPI) and rotation switching.
 - Interface in English and Korean (follows the system language).
 
-## Build and install
+## Install
+Download the DMG from [Releases](https://github.com/designloves2/TouchM/releases), drag TouchM to Applications.
+The app is ad-hoc signed, not notarized: on first launch right-click it → Open (or run `xattr -dr com.apple.quarantine /Applications/TouchM.app`).
+
+## Build from source
 ```bash
 ./make_app.sh        # builds build/TouchM.app
 ./install.sh         # copies it to /Applications and launches it
+./make_dmg.sh 0.1.0  # builds build/TouchM-0.1.0.dmg
 ```
 Grant **Accessibility** and **Input Monitoring** (and **Screen Recording** for the magnifier) when asked.
 Any other vendor driver that claims the panel's USB interfaces must be switched off first.
