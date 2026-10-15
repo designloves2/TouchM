@@ -79,7 +79,7 @@ KO = {
 "Startup, backup and about.":"시작, 백업, 정보.","Startup":"시작","Open TouchM at login":"로그인 시 TouchM 열기",
 "Re-initialise the panel after wake":"절전 해제 후 패널 다시 초기화","Some panels fall back to mouse mode after sleep.":"일부 패널은 잠자기 후 마우스 모드로 돌아갑니다.",
 "Delay touch after launch":"실행 후 터치 지연","Backup":"백업","Export settings…":"설정 내보내기…","Import settings…":"설정 가져오기…","Show in Finder":"Finder에서 보기","About":"정보","Developer":"개발자","Email":"이메일","GitHub":"GitHub",
-"Version 0.1 · touch driver, calibration, gestures and Commander in one app":"버전 0.1 · 터치 드라이버, 보정, 제스처, 커맨더를 하나로",
+"Version 0.1.1 · touch driver, calibration, gestures and Commander in one app":"버전 0.1 · 터치 드라이버, 보정, 제스처, 커맨더를 하나로",
 "A lens that enlarges the screen around your finger.":"손가락 주변 화면을 확대하는 렌즈.","Screen Recording permission needed":"화면 기록 권한 필요",
 "The lens reads the screen to enlarge it.":"렌즈가 화면을 읽어 확대합니다.","Show / hide":"표시 / 숨기기","Opens and closes with":"열고 닫는 제스처",
 "Commander cannot use this gesture while it opens the magnifier. Any Commander rule that used it is switched off and shown with a lock.":"확대경을 여는 동안 커맨더는 이 제스처를 쓸 수 없습니다. 이 제스처를 쓰던 규칙은 꺼지고 자물쇠로 표시됩니다.",

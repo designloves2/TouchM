@@ -280,7 +280,7 @@ struct GeneralPage: View {
                         IconTile(symbol: "hand.point.up.left.fill", color: .blue, size: 44)
                         VStack(alignment: .leading, spacing: 2) {
                             Text("TouchM").font(.headline)
-                            Text("Version 0.1 · touch driver, calibration, gestures and Commander in one app").font(.caption).foregroundStyle(.secondary)
+                            Text("Version 0.1.1 · touch driver, calibration, gestures and Commander in one app").font(.caption).foregroundStyle(.secondary)
                         }
                     }.padding(.vertical, 2)
                     LabeledContent("Developer") { Text("TJ.Choi").textSelection(.enabled) }

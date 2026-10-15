@@ -22,7 +22,7 @@ cat > "$APP/Contents/Info.plist" <<PL
 <key>CFBundleIconFile</key><string>TouchM</string>
 <key>CFBundleExecutable</key><string>TouchM</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.1</string>
+<key>CFBundleShortVersionString</key><string>0.1.1</string>
 <key>LSMinimumSystemVersion</key><string>13.0</string>
 <key>LSUIElement</key><true/>
 <key>NSInputMonitoringUsageDescription</key><string>TouchM reads the touch screen.</string>
