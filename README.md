@@ -4,6 +4,13 @@ An all-in-one touch-screen driver for macOS: multi-touch input, calibration, a g
 per-app rules (Commander), a screen magnifier, annotation tools, and display controls
 (brightness, contrast, resolution, rotation) in a menu bar app.
 
+> **About this project.** There was no dedicated driver for this touch monitor on macOS, so I wrote one for my own use.
+> Feel free to use it as is. Bug reports are welcome, but fixes will be slow, so please fix things yourself if you need to.
+> Just keep the license (MIT) and its copyright notice.
+>
+> 이 터치 모니터용 macOS 전용 드라이버가 없어서 제가 쓰려고 직접 만들었습니다. 그냥 가져다 쓰세요.
+> 버그 신고는 받지만 반영은 늦으니, 필요하시면 직접 고쳐서 사용하세요. 단, 라이선스(MIT)와 저작권 표시는 유지해 주세요.
+
 ## Compatibility
 **Tested only with one device**: a SiS HID Touch Controller (USB `0457:0819`) built into the **ZEUSLAP P16KT** portable touch monitor
 (macOS lists it as “ZEUSLAP TYPEC”), on a Mac with an Apple M4 chip. Nothing else has been verified.
