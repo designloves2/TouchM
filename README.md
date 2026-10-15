@@ -37,6 +37,16 @@ The app is ad-hoc signed, not notarized: on first launch right-click it → Open
 Grant **Accessibility** and **Input Monitoring** (and **Screen Recording** for the magnifier) when asked.
 Any other vendor driver that claims the panel's USB interfaces must be switched off first.
 
+## Known issues and limitations
+- **Not notarized.** The app is only ad-hoc signed (no Apple Developer ID), so macOS shows an "unidentified developer" warning on first launch. Right-click → Open, or remove the quarantine flag as described above.
+- **One tested device.** See Compatibility; other touch panels and monitors are unverified.
+- **Permissions.** Accessibility and Input Monitoring are required, and Screen Recording for the magnifier. After rebuilding the app from source you may have to re-grant them.
+- **Screen rotation.** Touch positions follow the display rotation, including after calibration. Gesture directions are mirrored automatically only at 180°; at 90° and 270° they follow the screen as drawn.
+- **Brightness over DDC/CI** depends on the monitor. Some monitors need 1–3 seconds to apply a change, ignore commands while busy, or show a different number in their own menu. Software dimming is the fallback.
+- **On-screen keyboard** uses the macOS Keyboard Viewer through the menu bar's Input menu, so that menu must be shown in the menu bar (System Settings → Keyboard → Text Input).
+- **Private system calls.** Screen rotation and the Keyboard Viewer toggle rely on undocumented macOS interfaces and may break with a macOS update.
+- This is a first release; several features were written for one machine and have had little testing. Please open an issue with the log (`~/Library/Application Support/TouchM/debug.log`).
+
 ## Layout
 - `Sources/TouchMCore` – device access, parser, mapper/calibration, gesture engine, Commander, preset importer
 - `Sources/TouchM` – the menu bar app (SwiftUI/AppKit)
