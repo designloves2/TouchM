@@ -1,0 +1,7 @@
+.build/
+build/
+.DS_Store
+# Local analysis workspace (not part of the project)
+re/
+snap/
+*.snap
