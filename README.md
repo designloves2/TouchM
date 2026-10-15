@@ -5,8 +5,8 @@ per-app rules (Commander), a screen magnifier, annotation tools, and display con
 (brightness, contrast, resolution, rotation) in a menu bar app.
 
 ## Compatibility
-**Tested only with one device**: a SiS HID Touch Controller (USB `0457:0819`) built into a ZEUSLAP TYPEC portable monitor,
-on an Apple Silicon Mac. Nothing else has been verified.
+**Tested only with one device**: a SiS HID Touch Controller (USB `0457:0819`) built into the **ZEUSLAP P16KT** portable touch monitor
+(macOS lists it as “ZEUSLAP TYPEC”), on a Mac with an Apple M4 chip. Nothing else has been verified.
 
 - **Touch input** is written for that controller's HID report format (multi-touch report `0x91`, 0–4095 coordinates) and
   matches any device with USB vendor ID `0x0457`. Panels from other vendors, or other SiS firmware, will probably not work
